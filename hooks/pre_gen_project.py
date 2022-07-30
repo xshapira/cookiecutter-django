@@ -6,6 +6,7 @@ NOTE:
 
 TODO: ? restrict Cookiecutter Django project initialization to Python 3.x environments only
 """
+
 from __future__ import print_function
 
 import sys
@@ -20,11 +21,13 @@ project_slug = "{{ cookiecutter.project_slug }}"
 if hasattr(project_slug, "isidentifier"):
     assert (
         project_slug.isidentifier()
-    ), "'{}' project slug is not a valid Python identifier.".format(project_slug)
+    ), f"'{project_slug}' project slug is not a valid Python identifier."
+
 
 assert (
     project_slug == project_slug.lower()
-), "'{}' project slug should be all lowercase".format(project_slug)
+), f"'{project_slug}' project slug should be all lowercase"
+
 
 assert (
     "\\" not in "{{ cookiecutter.author_name }}"
@@ -44,21 +47,26 @@ if "{{ cookiecutter.use_docker }}".lower() == "n":
                 break
 
             elif choice in no_options:
-                print(INFO + "Generation process stopped as requested." + TERMINATOR)
+                print(f"{INFO}Generation process stopped as requested.{TERMINATOR}")
                 sys.exit(1)
             else:
                 print(
-                    HINT
-                    + "Please respond with {} or {}: ".format(
-                        ", ".join(
-                            ["'{}'".format(o) for o in yes_options if not o == ""]
-                        ),
-                        ", ".join(
-                            ["'{}'".format(o) for o in no_options if not o == ""]
-                        ),
+                    (
+                        (
+                            HINT
+                            + "Please respond with {} or {}: ".format(
+                                ", ".join(
+                                    [f"'{o}'" for o in yes_options if o != ""]
+                                ),
+                                ", ".join(
+                                    [f"'{o}'" for o in no_options if o != ""]
+                                ),
+                            )
+                        )
+                        + TERMINATOR
                     )
-                    + TERMINATOR
                 )
+
 
 if (
     "{{ cookiecutter.use_whitenoise }}".lower() == "n"
